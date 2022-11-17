@@ -1,6 +1,6 @@
 import { PropTypes } from 'prop-types'
 
-function Pager({totalPages, currentPage, onPageChanged, numberOfVisiblePageButtons}) {
+function Pager({totalPages, currentPage, onPageChanged, numberOfVisiblePageButtons, className}) {
     
     const handleClick = (pageNumber) => {
         onPageChanged(pageNumber);
@@ -15,7 +15,7 @@ function Pager({totalPages, currentPage, onPageChanged, numberOfVisiblePageButto
     }
 
     const renderButtons = () => {
-        
+
         const start = currentPage - numberOfVisiblePageButtons <= 1 ? 1 : currentPage - numberOfVisiblePageButtons
         const end = (currentPage + numberOfVisiblePageButtons) >= totalPages ? totalPages : (currentPage + numberOfVisiblePageButtons)
         
@@ -31,43 +31,43 @@ function Pager({totalPages, currentPage, onPageChanged, numberOfVisiblePageButto
 				>{pageNumber}</button>
 			);
 		});
-        
     }
 
     if(totalPages > 1) {
         return (
-            <div className="btn-group">
+            <nav className={className}>
 
                 { currentPage - numberOfVisiblePageButtons > 1 &&
-                (<button
-                    className="btn"
-                    onClick={() => handleClick(1)}
-                >1</button>)
+                    <button
+                        className="btn"
+                        onClick={() => handleClick(1)}
+                    >1</button>
                 }
                 
                 { currentPage - numberOfVisiblePageButtons > 2 &&
-                    (<button className="btn btn-disabled">...</button>)
+                    <button className="btn btn-disabled">...</button>
                 }
 
                 {  renderButtons() }
 
                 { totalPages - currentPage - numberOfVisiblePageButtons > 1 &&
-                    (<button className="btn btn-disabled">...</button>)
+                    <button className="btn btn-disabled">...</button>
                 }
                 
                 { totalPages - currentPage - numberOfVisiblePageButtons > 0 &&
-                (<button
-                    className="btn"
-                    onClick={() => handleClick(totalPages)}
-                >{totalPages}</button>)
+                    <button
+                        className="btn"
+                        onClick={() => handleClick(totalPages)}
+                    >{totalPages}</button>
                 }
-            </div>
+            </nav>
         )
     }
 }
 
 Pager.defaultProps = {
     numberOfVisiblePageButtons: 2,
+    className: ''
 }
 
 Pager.propTypes = {
@@ -75,6 +75,7 @@ Pager.propTypes = {
     currentPage: PropTypes.number.isRequired,
     numberOfVisiblePageButtons: PropTypes.number.isRequired,
     onPageChanged:PropTypes.func,
+    className: PropTypes.string,
 }
 
 

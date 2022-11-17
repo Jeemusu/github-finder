@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import Spinner from '../layouts/Spinner'
 import Pager from '../layouts/Pager'
 import UserItem from './UserItem'
@@ -6,10 +6,10 @@ import GithubContext from '../../context/GithubContext'
 
 function UserResults() {
 
-    const {users, isLoading, searchUsers, search, setSearchInfo} = useContext(GithubContext)
+    const {users, isLoading, fetchUsers, searchInfo, setSearchInfo} = useContext(GithubContext)
 
     const handlePageChanged = (clickedPageNumber) => {
-        searchUsers(search.keywords, clickedPageNumber)
+        fetchUsers(searchInfo.keywords, clickedPageNumber)
         setSearchInfo({
             currentPage: clickedPageNumber
         })
@@ -26,9 +26,10 @@ function UserResults() {
                 </div>
                 <div className="m-auto text-center">
                     <Pager 
-                        totalPages={Math.ceil(search.totalResults/search.perPage)}
-                        currentPage={search.currentPage}
+                        totalPages={Math.ceil(searchInfo.totalResults/searchInfo.perPage)}
+                        currentPage={searchInfo.currentPage}
                         onPageChanged={(currentPage) => handlePageChanged(currentPage)}
+                        className="btn-group"
                     />
                 </div>
             </div>

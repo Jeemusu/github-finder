@@ -12,7 +12,7 @@ export const GithubProvider = ({children}) => {
     const initialState = {
         users: [],
         isLoading: false,
-        search: {
+        searchInfo: {
             keywords: '',
             currentPage: 1,
             totalResults: 0,
@@ -25,30 +25,26 @@ export const GithubProvider = ({children}) => {
 
     const setSearchInfo = (searchInfo) => {
         dispatch({
-            type: 'SET_SEARCH',
-            payload: {
-                ...state.search,
-                ...searchInfo
-            }
+            type: 'SET_SEARCHINFO',
+            payload: searchInfo
         })
     }
 
     const clearUsers = () => {
         dispatch({
             type: 'CLEAR_USERS',
-            
         })
     }
 
     // Fetch search result data from backend
-    const searchUsers = async (text, page) => {
+    const fetchUsers = async (text, page) => {
 
         setLoading()
 
         const params = new URLSearchParams({
             q: text,
             page: page ? page : 1,
-            per_page: state.search.perPage
+            per_page: state.searchInfo.perPage
         })
 
         const response = await fetch(
@@ -63,7 +59,7 @@ export const GithubProvider = ({children}) => {
         
         // TODO when we search for users we dont pass in the current page so it's always set to 1?
         dispatch({
-            type: 'SET_SEARCH',
+            type: 'SET_SEARCHINFO',
             payload: {
                 keywords: text,
                 totalResults: data.total_count,
@@ -76,7 +72,6 @@ export const GithubProvider = ({children}) => {
             payload: data.items
         })
     }
-
     
     const setLoading = () => {
         dispatch({
@@ -89,9 +84,8 @@ export const GithubProvider = ({children}) => {
             value={{ 
                 users: state.users,
                 isLoading: state.isLoading,
-                search: state.search,
-                searchUsers: searchUsers,
-                setLoading: setLoading,
+                searchInfo: state.searchInfo,
+                fetchUsers: fetchUsers,
                 setSearchInfo: setSearchInfo,
                 clearUsers: clearUsers
             }}

@@ -5,7 +5,7 @@ function UserSearch() {
 
     const [text, setText] = useState('')
 
-    const {users, searchUsers, setSearchInfo, clearUsers} = useContext(GithubContext)
+    const {users, fetchUsers, setSearchInfo, clearUsers} = useContext(GithubContext)
     
     const handleTextChange = (e) => {
         setText(e.target.value)
@@ -25,7 +25,7 @@ function UserSearch() {
         if(text === '') {
             alert('Please enter something')
         } else {
-            searchUsers(text)
+            fetchUsers(text)
             setSearchInfo({
                 currentPage: 1,
             })

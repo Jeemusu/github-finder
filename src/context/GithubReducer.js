@@ -11,11 +11,11 @@ const githubReducer = (state, action) => {
                 users: action.payload,
                 isLoading: false
             }
-        case 'SET_SEARCH':
+        case 'SET_SEARCHINFO':
             return {
                 ...state,
-                search: {
-                    ...state.search,
+                searchInfo: {
+                    ...state.searchInfo,
                     ...action.payload
                 }
             }

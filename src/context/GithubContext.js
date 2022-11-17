@@ -11,6 +11,7 @@ export const GithubProvider = ({children}) => {
     // Create initial state
     const initialState = {
         users: [],
+        user: [],
         isLoading: false,
         searchInfo: {
             keywords: '',
@@ -73,6 +74,32 @@ export const GithubProvider = ({children}) => {
         })
     }
     
+    // Fetch search result data from backend
+    const getUser = async (login) => {
+
+        setLoading()
+
+        const response = await fetch(
+            `${GITHUB_URL}/users/${login}`, 
+            {
+                headers: {
+                    Authorization: `token ${GITHUB_TOKEN}`
+                }
+            }
+        )
+
+        if(response.status === 404) {
+            window.location = '/notfound'
+        } else {
+            const data = await response.json()
+
+            dispatch({
+                type: 'GET_USER',
+                payload: data
+            })
+        }
+    }
+
     const setLoading = () => {
         dispatch({
             type: 'SET_LOADING'
@@ -83,9 +110,11 @@ export const GithubProvider = ({children}) => {
         <GithubContext.Provider
             value={{ 
                 users: state.users,
+                user: state.user,
                 isLoading: state.isLoading,
                 searchInfo: state.searchInfo,
                 fetchUsers: fetchUsers,
+                getUser: getUser,
                 setSearchInfo: setSearchInfo,
                 clearUsers: clearUsers
             }}

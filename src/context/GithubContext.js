@@ -11,29 +11,76 @@ export const GithubProvider = ({children}) => {
     // Create initial state
     const initialState = {
         users: [],
-        isLoading: true
+        isLoading: false,
+        search: {
+            keywords: '',
+            currentPage: 1,
+            totalResults: 0,
+            perPage: 16
+        }
     }
 
     // Use a reducer instead of useState
     const [state, dispatch] = useReducer(githubReducer, initialState)
 
-    // Fetch data from backend
-    const fetchUsers = async () => {
+    const setSearchInfo = (searchInfo) => {
+        dispatch({
+            type: 'SET_SEARCH',
+            payload: {
+                ...state.search,
+                ...searchInfo
+            }
+        })
+    }
+
+    const clearUsers = () => {
+        dispatch({
+            type: 'CLEAR_USERS',
+            
+        })
+    }
+
+    // Fetch search result data from backend
+    const searchUsers = async (text, page) => {
+
+        setLoading()
+
+        const params = new URLSearchParams({
+            q: text,
+            page: page ? page : 1,
+            per_page: state.search.perPage
+        })
+
         const response = await fetch(
-            `${GITHUB_URL}/users`, 
+            `${GITHUB_URL}/search/users?${params}`, 
             {
                 headers: {
                     Authorization: `token ${GITHUB_TOKEN}`
                 }
             }
         )
-
         const data = await response.json()
         
+        // TODO when we search for users we dont pass in the current page so it's always set to 1?
+        dispatch({
+            type: 'SET_SEARCH',
+            payload: {
+                keywords: text,
+                totalResults: data.total_count,
+            }
+        })
+
         // Instead of using setXYZ to set the global state we can dispatch
         dispatch({
             type: 'GET_USERS',
-            payload: data
+            payload: data.items
+        })
+    }
+
+    
+    const setLoading = () => {
+        dispatch({
+            type: 'SET_LOADING'
         })
     }
 
@@ -42,7 +89,11 @@ export const GithubProvider = ({children}) => {
             value={{ 
                 users: state.users,
                 isLoading: state.isLoading,
-                fetchUsers: fetchUsers
+                search: state.search,
+                searchUsers: searchUsers,
+                setLoading: setLoading,
+                setSearchInfo: setSearchInfo,
+                clearUsers: clearUsers
             }}
         >
             {children}

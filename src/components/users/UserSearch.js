@@ -1,12 +1,13 @@
 import { useContext, useState } from 'react'
 import GithubContext from '../../context/GithubContext'
 import AlertContext from '../../context/AlertContext'
+import { getUsersSearchResults } from '../../context/GithubActions'
 
 function UserSearch() {
 
     const [text, setText] = useState('')
 
-    const {users, fetchUsers, setSearchInfo, clearUsers} = useContext(GithubContext)
+    const {dispatch, users} = useContext(GithubContext)
     const { setAlert } = useContext(AlertContext)
     
     const handleTextChange = (e) => {
@@ -14,26 +15,52 @@ function UserSearch() {
     }
 
     const handleClear = (e) => {
-        clearUsers()
-        setSearchInfo({
-            currentPage: 1,
-            totalResults: 0,
-            keywords: ''
+        
+        dispatch({
+            type: 'CLEAR_USERS',
+        })
+
+        dispatch({
+            type: 'SET_SEARCHINFO',
+            payload: {
+                currentPage: 1,
+                totalResults: 0,
+                keywords: ''
+            }
         })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+
         e.preventDefault()
+        
         if(text === '') {
             setAlert(
                 'Please enter a search string.',
                 'error',
             )
         } else {
-            fetchUsers(text)
-            setSearchInfo({
-                currentPage: 1,
+
+            dispatch({
+                type: 'SET_LOADING'
             })
+
+            const users = await getUsersSearchResults(text)
+
+            dispatch({
+                type: 'GET_USERS',
+                payload: users.items
+            })
+
+            dispatch({
+                type: 'SET_SEARCHINFO',
+                payload: {
+                    keywords: text,
+                    totalResults: users.total_count,
+                    currentPage: 1
+                }
+            })
+
             setText('')
         }
         

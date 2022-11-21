@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types'
 import RepoItem from './RepoItem'
 
+/**
+ * RepoList component. 
+ * Displays a list of github repository from a passed down prop.
+ */
 function RepoList({ repos }) {
     return (
         <div className="rounded-lg shadow-lg card bg-base-100">

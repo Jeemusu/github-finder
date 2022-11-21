@@ -1,3 +1,6 @@
+/**
+ * About page component.
+ */
 function About() {
 
     return (

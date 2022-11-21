@@ -6,6 +6,9 @@ import Spinner from '../layouts/Spinner'
 import RepoList from '../repos/RepoList'
 import { getUserWithRepos } from '../../context/GithubActions'
 
+/**
+ * User profile page component.
+ */
 function User() {
 
     const params = useParams()

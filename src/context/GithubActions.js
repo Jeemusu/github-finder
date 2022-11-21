@@ -10,7 +10,7 @@ const github = axios.create({
     }
 })
 
-// Return an object with an array of user data and their repo data
+/** Returns an object with an array of user data and their repo data */ 
 export const getUserWithRepos = async (login) => {
 
     const params = new URLSearchParams({
@@ -29,6 +29,7 @@ export const getUserWithRepos = async (login) => {
     }
 }
 
+/** Returns an object for a specific user record */ 
 export const getUser = async (login) => {
 
     const response = await fetch(
@@ -49,6 +50,7 @@ export const getUser = async (login) => {
     }
 }
 
+/** Returns an array of a users repository records */ 
 export const getUserRepos = async (login) => {
 
     const params = new URLSearchParams({
@@ -69,6 +71,7 @@ export const getUserRepos = async (login) => {
     return data
 }
 
+/** Returns an array of user records */ 
 export const getUsersSearchResults = async (keywords, page, resultsPerPage) => {
 
     const params = new URLSearchParams({

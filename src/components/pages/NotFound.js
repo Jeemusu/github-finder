@@ -1,6 +1,9 @@
 import { FaHome } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
+/**
+ * 404 page component.
+ */
 function NotFound() {
     return (
         <div className="hero">

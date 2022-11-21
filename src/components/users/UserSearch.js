@@ -3,6 +3,10 @@ import GithubContext from '../../context/GithubContext'
 import AlertContext from '../../context/AlertContext'
 import { getUsersSearchResults } from '../../context/GithubActions'
 
+/**
+ * UserSearch component. 
+ * Displays a form which on submit requests search results from the github API.
+ */
 function UserSearch() {
 
     const [text, setText] = useState('')
@@ -10,10 +14,12 @@ function UserSearch() {
     const {dispatch, users} = useContext(GithubContext)
     const { setAlert } = useContext(AlertContext)
     
+    /** Set state for form inputs */
     const handleTextChange = (e) => {
         setText(e.target.value)
     }
 
+    /** Clear the search data */
     const handleClear = (e) => {
         
         dispatch({
@@ -30,6 +36,7 @@ function UserSearch() {
         })
     }
 
+    /** Get user search results */
     const handleSubmit = async (e) => {
 
         e.preventDefault()

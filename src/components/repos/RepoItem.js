@@ -1,6 +1,10 @@
 import { FaEye, FaInfo, FaLink, FaStar, FaUtensils } from 'react-icons/fa'
 import PropTypes from 'prop-types'
 
+/**
+ * RepoItem component. 
+ * Displays a single github repository record from a passed down prop.
+ */
 function RepoItem({ repo }) {
     const {
         name,

@@ -1,6 +1,10 @@
 import { PropTypes } from 'prop-types'
 import { Link } from 'react-router-dom'
 
+/**
+ * UserItem component. 
+ * Displays a single github users profile from data passed down in a prop.
+ */
 function UserItem({user: { login, avatar_url }}) {
     return (
         <div className="card shadow-md compact side bg-base-100">

@@ -5,6 +5,10 @@ import UserItem from './UserItem'
 import GithubContext from '../../context/GithubContext'
 import { getUsersSearchResults } from '../../context/GithubActions'
 
+/**
+ * UserResults component. 
+ * Displays a paginated list of github user profiles from data pulled from global context.
+ */
 function UserResults() {
 
     const {dispatch, users, isLoading, searchInfo} = useContext(GithubContext)
@@ -14,7 +18,7 @@ function UserResults() {
         dispatch({
             type: 'SET_LOADING'
         })
-        
+
         const users = await getUsersSearchResults(searchInfo.keywords, clickedPageNumber)
         
         dispatch({
@@ -43,7 +47,7 @@ function UserResults() {
                     ))}
                 </div>
                 : 
-                <p>No results found for "{searchInfo.keywords}"</p>
+                searchInfo.keywords && <p>No results found for "{searchInfo.keywords}"</p>
                 }
                 <div className="m-auto text-center">
                     <Pager 
